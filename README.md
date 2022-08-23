@@ -1,4 +1,8 @@
-# Hardhat Boilerplate
+# standard-contracts
+
+ERC721和ERC1155规范的标准实现
+
+----
 
 This repository contains a sample project that you can use as the starting point
 for your Ethereum project. It's also a great fit for learning the basics of
@@ -9,7 +13,7 @@ This project is intended to be used with the
 able to follow it by yourself by reading the README and exploring its
 `contracts`, `tests`, `scripts` and `frontend` directories.
 
-## Quick start
+## 快速启动
 
 The first things you need to do are cloning this repository and installing its
 dependencies:
@@ -45,7 +49,7 @@ Open [http://localhost:3000/](http://localhost:3000/) to see your Dapp. You will
 need to have [Metamask](https://metamask.io) installed and listening to
 `localhost 8545`.
 
-## User Guide
+## hardhat用户手册
 
 You can find detailed instructions on using this repository and many tips in [its documentation](https://hardhat.org/tutorial).
 
