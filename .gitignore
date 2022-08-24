@@ -4,3 +4,7 @@ node_modules
 #Hardhat files
 cache
 artifacts
+.vscode/configurationCache.log
+.gitignore
+.vscode/targets.log
+.vscode/dryrun.log

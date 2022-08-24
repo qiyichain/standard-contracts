@@ -12,6 +12,7 @@ pragma solidity ^0.8.0;
 // import "../../utils/Strings.sol";
 // import "../../utils/introspection/ERC165.sol";
 
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/introspection/IERC165.sol
 /**
  * @dev Interface of the ERC165 standard, as defined in the
  * https://eips.ethereum.org/EIPS/eip-165[EIP].
@@ -33,6 +34,9 @@ interface IERC165 {
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
 
+
+
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/introspection/ERC165.sol
 /**
  * @dev Implementation of the {IERC165} interface.
  *
@@ -56,6 +60,7 @@ abstract contract ERC165 is IERC165 {
     }
 }
 
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/IERC721.sol
 /**
  * @dev Required interface of an ERC721 compliant contract.
  */
@@ -194,6 +199,8 @@ interface IERC721 is IERC165 {
 }
 
 
+
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/IERC721Receiver.sol
 /**
  * @title ERC721 token receiver interface
  * @dev Interface for any contract that wants to support safeTransfers
@@ -217,7 +224,7 @@ interface IERC721Receiver {
     ) external returns (bytes4);
 }
 
-
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/IERC721Metadata.sol
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional metadata extension
  * @dev See https://eips.ethereum.org/EIPS/eip-721
@@ -571,6 +578,9 @@ library Strings {
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
+// ERC721标准实现
 
 /**
  * @dev Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including
@@ -1042,16 +1052,400 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     ) internal virtual {}
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/security/Pausable.sol
+// 可暂停
+/**
+ * @dev Contract module which allows children to implement an emergency stop
+ * mechanism that can be triggered by an authorized account.
+ *
+ * This module is used through inheritance. It will make available the
+ * modifiers `whenNotPaused` and `whenPaused`, which can be applied to
+ * the functions of your contract. Note that they will not be pausable by
+ * simply including this module, only once the modifiers are put in place.
+ */
+abstract contract Pausable is Context {
+    /**
+     * @dev Emitted when the pause is triggered by `account`.
+     */
+    event Paused(address account);
+
+    /**
+     * @dev Emitted when the pause is lifted by `account`.
+     */
+    event Unpaused(address account);
+
+    bool private _paused;
+
+    /**
+     * @dev Initializes the contract in unpaused state.
+     */
+    constructor() {
+        _paused = false;
+    }
+
+    /**
+     * @dev Modifier to make a function callable only when the contract is not paused.
+     *
+     * Requirements:
+     *
+     * - The contract must not be paused.
+     */
+    modifier whenNotPaused() {
+        _requireNotPaused();
+        _;
+    }
+
+    /**
+     * @dev Modifier to make a function callable only when the contract is paused.
+     *
+     * Requirements:
+     *
+     * - The contract must be paused.
+     */
+    modifier whenPaused() {
+        _requirePaused();
+        _;
+    }
+
+    /**
+     * @dev Returns true if the contract is paused, and false otherwise.
+     */
+    function paused() public view virtual returns (bool) {
+        return _paused;
+    }
+
+    /**
+     * @dev Throws if the contract is paused.
+     */
+    function _requireNotPaused() internal view virtual {
+        require(!paused(), "Pausable: paused");
+    }
+
+    /**
+     * @dev Throws if the contract is not paused.
+     */
+    function _requirePaused() internal view virtual {
+        require(paused(), "Pausable: not paused");
+    }
+
+    /**
+     * @dev Triggers stopped state.
+     *
+     * Requirements:
+     *
+     * - The contract must not be paused.
+     */
+    function _pause() internal virtual whenNotPaused {
+        _paused = true;
+        emit Paused(_msgSender());
+    }
+
+    /**
+     * @dev Returns to normal state.
+     *
+     * Requirements:
+     *
+     * - The contract must be paused.
+     */
+    function _unpause() internal virtual whenPaused {
+        _paused = false;
+        emit Unpaused(_msgSender());
+    }
+}
+
+
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Pausable.sol
+/**
+ * @dev ERC721 token with pausable token transfers, minting and burning.
+ *
+ * Useful for scenarios such as preventing trades until the end of an evaluation
+ * period, or having an emergency switch for freezing all token transfers in the
+ * event of a large bug.
+ */
+// abstract contract ERC721Pausable is ERC721, Pausable {
+//     /**
+//      * @dev See {ERC721-_beforeTokenTransfer}.
+//      *
+//      * Requirements:
+//      *
+//      * - the contract must not be paused.
+//      */
+//     function _beforeTokenTransfer(
+//         address from,
+//         address to,
+//         uint256 tokenId
+//     ) internal virtual override {
+//         super._beforeTokenTransfer(from, to, tokenId);
+
+//         require(!paused(), "ERC721Pausable: token transfer while paused");
+//     }
+// }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+//
+// 所有权限控制
+//
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
+/**
+ * @dev Contract module which provides a basic access control mechanism, where
+ * there is an account (an owner) that can be granted exclusive access to
+ * specific functions.
+ *
+ * By default, the owner account will be the one that deploys the contract. This
+ * can later be changed with {transferOwnership}.
+ *
+ * This module is used through inheritance. It will make available the modifier
+ * `onlyOwner`, which can be applied to your functions to restrict their use to
+ * the owner.
+ */
+abstract contract Ownable is Context {
+    address private _owner;
+
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    /**
+     * @dev Initializes the contract setting the deployer as the initial owner.
+     */
+    constructor() {
+        _transferOwnership(_msgSender());
+    }
+
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {
+        _checkOwner();
+        _;
+    }
+
+    /**
+     * @dev Returns the address of the current owner.
+     */
+    function owner() public view virtual returns (address) {
+        return _owner;
+    }
+
+    /**
+     * @dev Throws if the sender is not the owner.
+     */
+    function _checkOwner() internal view virtual {
+        require(owner() == _msgSender(), "Ownable: caller is not the owner");
+    }
+
+    /**
+     * @dev Leaves the contract without owner. It will not be possible to call
+     * `onlyOwner` functions anymore. Can only be called by the current owner.
+     *
+     * NOTE: Renouncing ownership will leave the contract without an owner,
+     * thereby removing any functionality that is only available to the owner.
+     */
+    function renounceOwnership() public virtual onlyOwner {
+        _transferOwnership(address(0));
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Can only be called by the current owner.
+     */
+    function transferOwnership(address newOwner) public virtual onlyOwner {
+        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        _transferOwnership(newOwner);
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Internal function without access restriction.
+     */
+    function _transferOwnership(address newOwner) internal virtual {
+        address oldOwner = _owner;
+        _owner = newOwner;
+        emit OwnershipTransferred(oldOwner, newOwner);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// 可销毁
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Burnable.sol
+
+// /**
+//  * @title ERC721 Burnable Token
+//  * @dev ERC721 Token that can be burned (destroyed).
+//  */
+// abstract contract ERC721Burnable is Context, ERC721 {
+//     /**
+//      * @dev Burns `tokenId`. See {ERC721-_burn}.
+//      *
+//      * Requirements:
+//      *
+//      * - The caller must own `tokenId` or be an approved operator.
+//      */
+//     function burn(uint256 tokenId) public virtual {
+//         //solhint-disable-next-line max-line-length
+//         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not token owner or approved");
+//         _burn(tokenId);
+//     }
+// }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @dev ERC721 token with storage based token URI management.
+ */
+abstract contract ERC721URIStorage is ERC721 {
+    using Strings for uint256;
+
+    // Optional mapping for token URIs
+    mapping(uint256 => string) private _tokenURIs;
+
+    /**
+     * @dev See {IERC721Metadata-tokenURI}.
+     */
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        _requireMinted(tokenId);
+
+        string memory _tokenURI = _tokenURIs[tokenId];
+        string memory base = _baseURI();
+
+        // If there is no base URI, return the token URI.
+        if (bytes(base).length == 0) {
+            return _tokenURI;
+        }
+        // If both are set, concatenate the baseURI and tokenURI (via abi.encodePacked).
+        if (bytes(_tokenURI).length > 0) {
+            return string(abi.encodePacked(base, _tokenURI));
+        }
+
+        return super.tokenURI(tokenId);
+    }
+
+    /**
+     * @dev Sets `_tokenURI` as the tokenURI of `tokenId`.
+     *
+     * Requirements:
+     *
+     * - `tokenId` must exist.
+     */
+    function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual {
+        require(_exists(tokenId), "ERC721URIStorage: URI set of nonexistent token");
+        _tokenURIs[tokenId] = _tokenURI;
+    }
+
+    /**
+     * @dev See {ERC721-_burn}. This override additionally checks to see if a
+     * token-specific URI was set for the token, and if so, it deletes the token URI from
+     * the storage mapping.
+     */
+    function _burn(uint256 tokenId) internal virtual override {
+        super._burn(tokenId);
+
+        if (bytes(_tokenURIs[tokenId]).length != 0) {
+            delete _tokenURIs[tokenId];
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// 标准合约聚合器
+abstract contract ERC721Aggregator is ERC721URIStorage, Pausable, Ownable { 
+
+    /**
+     * @dev See {ERC721-_beforeTokenTransfer}.
+     *
+     * Requirements:
+     *
+     * - the contract must not be paused.
+     */
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual override {
+        super._beforeTokenTransfer(from, to, tokenId);
+
+        require(!paused(), "ERC721Pausable: token transfer while paused");
+    }
+
+    /**
+     * @dev Burns `tokenId`. See {ERC721-_burn}.
+     *
+     * Requirements:
+     *
+     * - The caller must own `tokenId` or be an approved operator.
+     */
+    function burn(uint256 tokenId) public virtual {
+        //solhint-disable-next-line max-line-length
+        require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not token owner or approved");
+        _burn(tokenId);
+    }
+
+     /**
+     * @dev Mints `quantity` tokens and transfers them to `to`.
+     *
+     * Requirements:
+     *
+     * - `to` cannot be the zero address.
+     * - `quantity` must be greater than 0.
+     *
+     * Emits a {Transfer} event.
+     */
+    // function _mint(
+    //     address to,
+    //     uint256 quantity,
+    //     bytes memory _data,
+    //     bool safe
+    // ) internal {
+    //     uint256 startTokenId = _currentIndex;
+    //     if (to == address(0)) revert MintToZeroAddress();
+    //     if (quantity == 0) revert MintZeroQuantity();
+
+    //     _beforeTokenTransfers(address(0), to, startTokenId, quantity);
+
+    //     // Overflows are incredibly unrealistic.
+    //     // balance or numberMinted overflow if current value of either + quantity > 1.8e19 (2**64) - 1
+    //     // updatedIndex overflows if _currentIndex + quantity > 1.2e77 (2**256) - 1
+    //     unchecked {
+    //         _addressData[to].balance += uint64(quantity);
+    //         _addressData[to].numberMinted += uint64(quantity);
+
+    //         _ownerships[startTokenId].addr = to;
+    //         _ownerships[startTokenId].startTimestamp = uint64(block.timestamp);
+
+    //         uint256 updatedIndex = startTokenId;
+    //         uint256 end = updatedIndex + quantity;
+
+    //         if (safe && to.isContract()) {
+    //             do {
+    //                 emit Transfer(address(0), to, updatedIndex);
+    //                 if (!_checkContractOnERC721Received(address(0), to, updatedIndex++, _data)) {
+    //                     revert TransferToNonERC721ReceiverImplementer();
+    //                 }
+    //             } while (updatedIndex != end);
+    //             // Reentrancy protection
+    //             if (_currentIndex != startTokenId) revert();
+    //         } else {
+    //             do {
+    //                 emit Transfer(address(0), to, updatedIndex++);
+    //             } while (updatedIndex != end);
+    //         }
+    //         _currentIndex = updatedIndex;
+    //     }
+    //     _afterTokenTransfers(address(0), to, startTokenId, quantity);
+    // }
+
+    function mint(address to, uint256 tokenId, bytes memory data ) public onlyOwner whenNotPaused {
+        _safeMint(to, tokenId, data);
+    }
+}
 
 
 // 仅需修改以下合约名称即可
 
-contract DemoDemo is ERC721 {
+contract DemoDemo is ERC721Aggregator {
     constructor() ERC721("DemoDemo", "DD"){
     }
 
-    function Mint(address to, uint256 tokenId, bytes memory data ) public {
-        _safeMint(to, tokenId, data);
-    }
+    
 }
