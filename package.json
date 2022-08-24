@@ -4,7 +4,8 @@
   "description": "A boilerplate repository to get you started with Hardhat and Ethereum development",
   "scripts": {
     "test": "hardhat test",
-    "compile": "yarn run hardhat compile"
+    "compile": "yarn run hardhat compile",
+    "clean": "yarn run hardhat clean"
   },
   "repository": {
     "type": "git",
