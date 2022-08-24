@@ -28,6 +28,7 @@
     "@typechain/hardhat": "^6.1.2",
     "@types/mocha": "^9.1.1",
     "chai": "^4.2.0",
+    "erc721a": "^4.2.2",
     "ethers": "^5.4.7",
     "hardhat": "^2.9.9",
     "hardhat-gas-reporter": "^1.0.8",
@@ -35,5 +36,8 @@
     "ts-node": "^10.9.1",
     "typechain": "^8.1.0",
     "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.3"
   }
 }
