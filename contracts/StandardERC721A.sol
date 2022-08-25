@@ -32,7 +32,7 @@ abstract contract StandardERC721A is Ownable, Pausable , ERC721ABurnable, ERC721
     }
 
     // 批量mint
-    function mint(uint256 quantity) external onlyOwner whenNotPaused{
+    function mint(uint256 quantity) external onlyOwner {
         // `_mint`'s second argument now takes in a `quantity`, not a `tokenId`.
         _mint(msg.sender, quantity);
     }
