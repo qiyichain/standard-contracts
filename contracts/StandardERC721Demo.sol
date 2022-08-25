@@ -5,6 +5,7 @@ import "./StandardERC721.sol";
 
 contract StandardERC721Demo is StandardERC721  {
     constructor() ERC721("StandardERC721Demo", "STD721"){
+        baseTokenURI = "https://www.qiyichain.com/";
     }
 
 }

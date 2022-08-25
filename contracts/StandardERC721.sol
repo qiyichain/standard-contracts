@@ -1,49 +1,73 @@
-//SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
+abstract contract StandardERC721 is ERC721Enumerable, ERC721URIStorage, Pausable, Ownable, ERC721Burnable {
+    using Counters for Counters.Counter;
 
-// 标准ERC721实现，增加了 可销毁、URI存储、所有权管理、可暂停
-abstract contract StandardERC721 is  ERC721Burnable, ERC721URIStorage, Ownable, ERC721Pausable {
-    function adminMint(address to, uint256 tokenId, bytes memory data ) public onlyOwner{
-        _safeMint(to, tokenId, data);
+    Counters.Counter private _tokenIdCounter; // default start value 0
+    string public baseTokenURI;
+
+    function setBaseURI(string memory _baseTokenURI) public onlyOwner {
+        baseTokenURI = _baseTokenURI;
     }
 
-    /**
-     * @dev Burns `tokenId`. See {ERC721-_burn}.
-     * Requirements:
-     * - The caller must own `tokenId` or be an approved operator.
-     */
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal virtual override(ERC721, ERC721Pausable) {
-        ERC721Pausable._beforeTokenTransfer(from, to, tokenId);
-
-        require(!paused(), "ERC721Pausable: token transfer while paused");
+    function _baseURI() internal view override returns (string memory) {
+        return baseTokenURI;
     }
 
-    /**
-     * @dev See {ERC721-_burn}. This override additionally checks to see if a
-     * token-specific URI was set for the token, and if so, it deletes the token URI from
-     * the storage mapping.
-     */
-    function _burn(uint256 tokenId) internal virtual override(ERC721, ERC721URIStorage) {
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }
+
+    // tokenId auto increment
+    // full-uri = baseuri  + tokenUri
+    function mint(address to, string memory tokenUri) public onlyOwner {
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, tokenUri);
+    }
+
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
+        internal
+        whenNotPaused
+        override(ERC721, ERC721Enumerable)
+    {
+        ERC721Enumerable._beforeTokenTransfer(from, to, tokenId);
+    }
+
+    // The following functions are overrides required by Solidity.
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         ERC721URIStorage._burn(tokenId);
     }
 
-    /**
-     * @dev See {IERC721Metadata-tokenURI}.
-     */
-    function tokenURI(uint256 tokenId) public view virtual override(ERC721, ERC721URIStorage) returns (string memory) {
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
         return ERC721URIStorage.tokenURI(tokenId);
     }
+
+    // @inheritdoc	ERC165
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, ERC721Enumerable)
+        returns (bool)
+    {
+        return ERC721Enumerable.supportsInterface(interfaceId);
+    }
 }
-
-
