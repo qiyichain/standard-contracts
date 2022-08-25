@@ -32,7 +32,7 @@ abstract contract StandardERC721 is ERC721Enumerable, ERC721URIStorage, Pausable
 
     // tokenId auto increment
     // full-uri = baseuri  + tokenUri
-    function mint(address to, string memory tokenUri) public onlyOwner {
+    function mint(address to, string memory tokenUri) public onlyOwner whenNotPaused {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
