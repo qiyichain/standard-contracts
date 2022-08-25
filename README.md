@@ -2,6 +2,21 @@
 
 ERC721和ERC1155规范的标准实现
 
+
+编译
+
+```
+make compile
+```
+
+测试(TODO), 可以用remix进行测试
+```
+make test
+```
+
+
+
+
 ----
 
 This repository contains a sample project that you can use as the starting point
