@@ -4,11 +4,17 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "./AuthManage.sol";
 
-abstract contract StandardERC721 is ERC721Enumerable, ERC721URIStorage, Pausable, Ownable, ERC721Burnable {
+abstract contract StandardERC721 is
+    ERC721Enumerable,
+    ERC721URIStorage,
+    Pausable,
+    AuthManage,
+    ERC721Burnable
+{
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter; // default start value 0
@@ -32,23 +38,30 @@ abstract contract StandardERC721 is ERC721Enumerable, ERC721URIStorage, Pausable
 
     // tokenId auto increment
     // full-uri = baseuri  + tokenUri
-    function mint(address to, string memory tokenUri) public onlyOwner whenNotPaused {
+    function mint(address to, string memory tokenUri)
+        public
+        onlyOwner
+        whenNotPaused
+    {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, tokenUri);
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
-        internal
-        whenNotPaused
-        override(ERC721, ERC721Enumerable)
-    {
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal override(ERC721, ERC721Enumerable) whenNotPaused {
         ERC721Enumerable._beforeTokenTransfer(from, to, tokenId);
     }
 
     // The following functions are overrides required by Solidity.
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+    function _burn(uint256 tokenId)
+        internal
+        override(ERC721, ERC721URIStorage)
+    {
         ERC721URIStorage._burn(tokenId);
     }
 

@@ -2,16 +2,18 @@
 // yours, or create new ones.
 
 const path = require("path");
+const hardhat = require('hardhat');
+const { ethers, artifacts } = hardhat;
 
 async function main() {
   // This is just a convenience check
-  if (network.name === "hardhat") {
-    console.warn(
-      "You are trying to deploy a contract to the Hardhat Network, which" +
-        "gets automatically created and destroyed every time. Use the Hardhat" +
-        " option '--network localhost'"
-    );
-  }
+  // if (network.name === "hardhat") {
+  //   console.warn(
+  //     "You are trying to deploy a contract to the Hardhat Network, which" +
+  //       "gets automatically created and destroyed every time. Use the Hardhat" +
+  //       " option '--network localhost'"
+  //   );
+  // }
 
   // ethers is available in the global scope
   const [deployer] = await ethers.getSigners();
@@ -22,17 +24,17 @@ async function main() {
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const Token = await ethers.getContractFactory("Token");
-  const token = await Token.deploy();
-  await token.deployed();
+  const DidProxy = await ethers.getContractFactory("DidProxy");
+  const didProxy = await DidProxy.deploy(deployer.getAddress());
+  await didProxy.deployed();
 
-  console.log("Token address:", token.address);
+  console.log("didProxy address:", didProxy.address);
 
   // We also save the contract's artifacts and address in the frontend directory
-  saveFrontendFiles(token);
+  saveFrontendFiles(didProxy);
 }
 
-function saveFrontendFiles(token) {
+function saveFrontendFiles(didProxy) {
   const fs = require("fs");
   const contractsDir = path.join(__dirname, "..", "frontend", "src", "contracts");
 
@@ -42,14 +44,14 @@ function saveFrontendFiles(token) {
 
   fs.writeFileSync(
     path.join(contractsDir, "contract-address.json"),
-    JSON.stringify({ Token: token.address }, undefined, 2)
+    JSON.stringify({ DidProxy: didProxy.address }, undefined, 2)
   );
 
-  const TokenArtifact = artifacts.readArtifactSync("Token");
+  const DidProxyArtifact = artifacts.readArtifactSync("DidProxy");
 
   fs.writeFileSync(
-    path.join(contractsDir, "Token.json"),
-    JSON.stringify(TokenArtifact, null, 2)
+    path.join(contractsDir, "DidProxy.json"),
+    JSON.stringify(DidProxyArtifact, null, 2)
   );
 }
 
