@@ -11,7 +11,6 @@ import "@openzeppelin/contracts/utils/Context.sol";
 contract DidProxy is Context, SafeSend, Ownable {
     mapping(uint256 => bool) public erc721aMap;
     mapping(uint256 => bool) public erc721Map;
-    mapping(uint256 => bool) public erc1155Map;
 
     // 部署合约721a
     function deployERC721A(
@@ -56,16 +55,6 @@ contract DidProxy is Context, SafeSend, Ownable {
         );
         erc721Map[_id] = true;
     }
-
-    // 部署合约721a
-    // function deployERC1155(string memory _baseURI, uint256 _id)
-    //     public
-    //     allowAdmin
-    // {
-    //     require(erc1155Map[_id] == false, "Contract already exists");
-    //     new DIDERC1155(_baseURI);
-    //     erc1155Map[_id] = true;
-    // }
 
     // 转帐
     function safeTransfer(address payable to, uint256 amount)
