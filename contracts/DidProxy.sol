@@ -6,11 +6,14 @@ import "./DIDERC721.sol";
 // import "./AuthManage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./library/SafeSend.sol";
-import "@openzeppelin/contracts/utils/Context.sol";
 
-contract DidProxy is Context, SafeSend, Ownable {
+contract DidProxy is SafeSend, Ownable {
     mapping(uint256 => bool) public erc721aMap;
     mapping(uint256 => bool) public erc721Map;
+
+    // 部署721 合约事件
+    event DeployERC721(uint256 _id, address _owneraddr);
+    event DeployERC721A(uint256 _id, address _owneraddr);
 
     // 部署合约721a
     function deployERC721A(
@@ -21,9 +24,9 @@ contract DidProxy is Context, SafeSend, Ownable {
         bool isMint,
         uint256 mintQuantity,
         address _owneraddr
-    ) public onlyOwner {
+    ) public onlyOwner returns (address) {
         require(erc721aMap[_id] == false, "Contract already exists");
-        new DIDERC721A(
+        DIDERC721A _erc721 = new DIDERC721A(
             _name,
             _symbol,
             _baseURI,
@@ -31,7 +34,9 @@ contract DidProxy is Context, SafeSend, Ownable {
             mintQuantity,
             _owneraddr
         );
+        emit DeployERC721(_id, _owneraddr);
         erc721aMap[_id] = true;
+        return address(_erc721);
     }
 
     // 部署合约721a
@@ -43,9 +48,9 @@ contract DidProxy is Context, SafeSend, Ownable {
         bool isMint,
         uint256 mintQuantity,
         address _owneraddr
-    ) public onlyOwner {
+    ) public onlyOwner returns (address) {
         require(erc721Map[_id] == false, "Contract already exists");
-        new DIDERC721(
+        DIDERC721 _erc721a = new DIDERC721(
             name_,
             symbol_,
             _baseURI,
@@ -53,7 +58,9 @@ contract DidProxy is Context, SafeSend, Ownable {
             mintQuantity,
             _owneraddr
         );
+        emit DeployERC721A(_id, _owneraddr);
         erc721Map[_id] = true;
+        return address(_erc721a);
     }
 
     // 转帐

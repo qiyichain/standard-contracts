@@ -3,6 +3,7 @@
 
 const path = require("path");
 const hardhat = require('hardhat');
+const web3 = require('@nomicfoundation/hardhat-network-helpers')
 const { ethers, artifacts } = hardhat;
 
 async function main() {
