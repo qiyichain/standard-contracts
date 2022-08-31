@@ -20,6 +20,7 @@ abstract contract AuthManage {
     );
 
     constructor(address _owneraddr) {
+        _superAdmin = _owneraddr;
         _transferOwnership(_owneraddr);
     }
 
@@ -70,10 +71,7 @@ abstract contract AuthManage {
      * Can only be called by the current owner.
      */
     function transferOwnership(address newOwner) public virtual onlyOwner {
-        require(
-            newOwner != address(0),
-            "Ownable: new owner is the zero address"
-        );
+        require(newOwner != address(0), "Auth: new owner is the zero address");
         _transferOwnership(newOwner);
     }
 
@@ -93,7 +91,7 @@ abstract contract AuthManage {
     function _checkOwner() internal view virtual {
         require(
             owner() == msg.sender || superAdmin() == msg.sender,
-            "Ownable: caller is not the owner or superAdmin"
+            "Auth: caller is not the owner or superAdmin"
         );
     }
 
@@ -110,7 +108,7 @@ abstract contract AuthManage {
     function _checkSuperAdmin() internal view virtual {
         require(
             superAdmin() == msg.sender,
-            "Ownable: caller is not the superAdmin"
+            "Auth: caller is not the superAdmin"
         );
     }
 
@@ -126,15 +124,23 @@ abstract contract AuthManage {
         return true;
     }
 
+    function transferSuperAdmin(address newSuperAdmin)
+        public
+        virtual
+        allowSuperAdmin
+    {
+        require(
+            newSuperAdmin != address(0),
+            "Auth: new superAdmin is the zero address"
+        );
+        _transferSuperAdmin(newSuperAdmin);
+    }
+
     /**
      * @dev
      * Internal function without access restriction.
      */
-    function _transferSuperAdmin(address newSuperAdmin)
-        internal
-        virtual
-        allowSuperAdmin
-    {
+    function _transferSuperAdmin(address newSuperAdmin) internal virtual {
         address oldSuperAdmin = _superAdmin;
         _superAdmin = newSuperAdmin;
         emit SuperAdminTransferred(oldSuperAdmin, newSuperAdmin);

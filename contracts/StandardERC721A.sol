@@ -16,6 +16,7 @@ abstract contract StandardERC721A is
     ERC721AQueryable
 {
     string public baseTokenURI;
+    uint256 public _currentIndex = 1;
 
     function setBaseURI(string memory _baseTokenURI) public onlyOwner {
         baseTokenURI = _baseTokenURI;
