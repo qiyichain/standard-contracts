@@ -16,7 +16,6 @@ abstract contract StandardERC721A is
     ERC721AQueryable
 {
     string public baseTokenURI;
-    uint256 public _currentIndex = 1;
 
     function setBaseURI(string memory _baseTokenURI) public onlyOwner {
         baseTokenURI = _baseTokenURI;
@@ -38,6 +37,11 @@ abstract contract StandardERC721A is
     function mint(uint256 quantity) external onlyOwner {
         // `_mint`'s second argument now takes in a `quantity`, not a `tokenId`.
         _mint(msg.sender, quantity);
+    }
+
+    // 合约开始id
+    function _startTokenId() internal view virtual override returns (uint256) {
+        return 1;
     }
 
     function _beforeTokenTransfers(

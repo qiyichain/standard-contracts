@@ -12,8 +12,8 @@ contract DidProxy is SafeSend, Ownable {
     mapping(uint256 => bool) public erc721Map;
 
     // 部署721 合约事件
-    event DeployERC721(uint256 _id, address _owneraddr);
-    event DeployERC721A(uint256 _id, address _owneraddr);
+    event DeployERC721(uint256 _id, address _owneraddr, address _caddr);
+    event DeployERC721A(uint256 _id, address _owneraddr, address _caddr);
 
     // 部署合约721a
     function deployERC721A(
@@ -34,7 +34,7 @@ contract DidProxy is SafeSend, Ownable {
             mintQuantity,
             _owneraddr
         );
-        emit DeployERC721(_id, _owneraddr);
+        emit DeployERC721(_id, _owneraddr, address(_erc721));
         erc721aMap[_id] = true;
         return address(_erc721);
     }
@@ -54,7 +54,7 @@ contract DidProxy is SafeSend, Ownable {
             _baseURI,
             _owneraddr
         );
-        emit DeployERC721A(_id, _owneraddr);
+        emit DeployERC721A(_id, _owneraddr, address(_erc721a));
         erc721Map[_id] = true;
         return address(_erc721a);
     }
