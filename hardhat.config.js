@@ -6,6 +6,7 @@ require("@nomiclabs/hardhat-web3");
 // project. It imports a Hardhat task definition, that can be used for
 // testing the frontend.
 require("./tasks/deploy.js");
+require('./tasks/checkTx.js');
 task("accounts", "Prints the list of accounts", async () => {
   const accounts = await ethers.getSigners();
 

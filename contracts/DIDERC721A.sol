@@ -14,7 +14,7 @@ contract DIDERC721A is StandardERC721A {
     ) ERC721A(name_, symbol_) AuthManage(_owneraddr) {
         baseTokenURI = _baseURI;
         if (isMint) {
-            _mint(msg.sender, mintQuantity);
+            _mint(_owneraddr, mintQuantity);
         }
     }
 }
