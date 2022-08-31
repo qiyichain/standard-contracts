@@ -45,8 +45,6 @@ contract DidProxy is SafeSend, Ownable {
         string memory symbol_,
         string memory _baseURI,
         uint256 _id,
-        bool isMint,
-        uint256 mintQuantity,
         address _owneraddr
     ) public onlyOwner returns (address) {
         require(erc721Map[_id] == false, "Contract already exists");
@@ -54,8 +52,6 @@ contract DidProxy is SafeSend, Ownable {
             name_,
             symbol_,
             _baseURI,
-            isMint,
-            mintQuantity,
             _owneraddr
         );
         emit DeployERC721A(_id, _owneraddr);
