@@ -48,6 +48,11 @@ contract StandardERC721A is
         _mint(msg.sender, quantity);
     }
 
+    function mint(address to_, uint256 quantity) public onlyOwner whenNotPaused {
+        // `_mint`'s second argument now takes in a `quantity`, not a `tokenId`.
+        _mint(to_, quantity);
+    }
+
     // 合约开始id
     function _startTokenId() internal view virtual override returns (uint256) {
         return 1;

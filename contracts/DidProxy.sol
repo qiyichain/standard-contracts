@@ -47,9 +47,9 @@ contract DidProxy is SafeSend, Ownable {
 
         // batch mint after create contract
         if(isMint && mintQuantity > 0) {
-            _erc721a.mint(mintQuantity);
+            _erc721a.mint(_owneraddr, mintQuantity);
         }
-        
+        _erc721a.transferOwnership(_owneraddr);
     }
 
 
