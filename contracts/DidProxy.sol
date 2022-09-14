@@ -15,8 +15,8 @@ contract DidProxy is SafeSend, Ownable {
     mapping(uint256 => bool) public erc721Map;
 
     // 部署721 合约事件
-    event DeployERC721(uint256 _id, address _owneraddr, address _caddr);
-    event DeployERC721A(uint256 _id, address _owneraddr, address _caddr);
+    event DeployERC721(uint256  _id, address  _owneraddr, address indexed _caddr);
+    event DeployERC721A(uint256  _id, address  _owneraddr, address indexed _caddr);
     event Received(address sender, uint256 value);
 
     receive() external payable {

@@ -17,6 +17,12 @@ describe("DidProxy", function () {
         // didproxy = await ethers.getContractAt("DidProxy", "0xc8486e00d165B2d8C256d230c14B43A64A12aC48")
 
 
+        addressList = await ethers.getContractAt("AddressList", "0x000000000000000000000000000000000000F003")
+        let tx = await addressList.addDeveloper(didproxy.address)
+        // expect()
+        await expect((await tx.wait()).status).equal(1)
+
+
         console.log("===>", didproxy.address)
     })
 
