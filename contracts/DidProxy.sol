@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./DIDERC721A.sol";
-import "./DIDERC721.sol";
+// import "./DIDERC721A.sol";
+// import "./DIDERC721.sol";
 // import "./AuthManage.sol";
+
+import "./StandardERC721.sol";
+import "./StandardERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./library/SafeSend.sol";
 
@@ -29,39 +32,46 @@ contract DidProxy is SafeSend, Ownable {
         bool isMint,
         uint256 mintQuantity,
         address _owneraddr
-    ) public onlyOwner returns (address) {
+    ) public onlyOwner  {
         require(erc721aMap[_id] == false, "Contract already exists");
-        DIDERC721A _erc721 = new DIDERC721A(
+        StandardERC721A _erc721a = new StandardERC721A(
             _name,
             _symbol,
             _baseURI,
-            isMint,
-            mintQuantity,
-            _owneraddr
+            address(this)
         );
-        emit DeployERC721(_id, _owneraddr, address(_erc721));
+        emit DeployERC721A(_id, _owneraddr, address(_erc721a));
         erc721aMap[_id] = true;
-        return address(_erc721);
+
+        require(_erc721a.addAdmin(_owneraddr), "add admin failed");
+
+        // batch mint after create contract
+        if(isMint && mintQuantity > 0) {
+            _erc721a.mint(mintQuantity);
+        }
+        
     }
 
-    // 部署合约721a
+
+
+
+    // 部署合约721
     function deployERC721(
         string memory name_,
         string memory symbol_,
         string memory _baseURI,
         uint256 _id,
         address _owneraddr
-    ) public onlyOwner returns (address) {
+    ) public onlyOwner  {
         require(erc721Map[_id] == false, "Contract already exists");
-        DIDERC721 _erc721a = new DIDERC721(
+        StandardERC721 _erc721 = new StandardERC721(
             name_,
             symbol_,
             _baseURI,
             _owneraddr
         );
-        emit DeployERC721A(_id, _owneraddr, address(_erc721a));
+        emit DeployERC721(_id, _owneraddr, address(_erc721));
         erc721Map[_id] = true;
-        return address(_erc721a);
     }
 
     // 转帐

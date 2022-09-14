@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./AuthManage.sol";
 
-abstract contract StandardERC721 is
+contract StandardERC721 is
     ERC721Enumerable,
     ERC721URIStorage,
     Pausable,
@@ -19,6 +19,15 @@ abstract contract StandardERC721 is
 
     Counters.Counter private _tokenIdCounter; // default start value 0
     string public baseTokenURI;
+
+    constructor(
+        string memory name_,
+        string memory symbol_,
+        string memory baseURI_,
+        address _owneraddr
+    ) ERC721(name_, symbol_) AuthManage(_owneraddr) {
+        baseTokenURI = baseURI_;
+    }
 
     function setBaseURI(string memory _baseTokenURI) public onlyOwner {
         baseTokenURI = _baseTokenURI;

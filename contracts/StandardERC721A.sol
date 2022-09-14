@@ -9,13 +9,22 @@ import "erc721a/contracts/extensions/ERC721ABurnable.sol";
 import "erc721a/contracts/extensions/ERC721AQueryable.sol";
 
 // ERC721Enumerable, ERC721URIStorage {
-abstract contract StandardERC721A is
+contract StandardERC721A is
     AuthManage,
     Pausable,
     ERC721ABurnable,
     ERC721AQueryable
 {
     string public baseTokenURI;
+
+    constructor(
+        string memory name_,
+        string memory symbol_,
+        string memory baseURI_,
+        address _owneraddr
+    ) ERC721A(name_, symbol_) AuthManage(_owneraddr) {
+        baseTokenURI = baseURI_;
+    }
 
     function setBaseURI(string memory _baseTokenURI) public onlyOwner {
         baseTokenURI = _baseTokenURI;
@@ -34,7 +43,7 @@ abstract contract StandardERC721A is
     }
 
     // 批量mint
-    function mint(uint256 quantity) external onlyOwner {
+    function mint(uint256 quantity) public onlyOwner whenNotPaused {
         // `_mint`'s second argument now takes in a `quantity`, not a `tokenId`.
         _mint(msg.sender, quantity);
     }

@@ -12,3 +12,7 @@ test:clean
 clean:
 	yarn clean
 	rm -rf cache
+
+.PHONY:deploy
+deploy:
+	npx hardhat run scripts/deploy.js --network qiyichain

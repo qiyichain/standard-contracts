@@ -21,7 +21,8 @@ abstract contract AuthManage {
 
     constructor(address _owneraddr) {
         _superAdmin = _owneraddr;
-        _transferOwnership(_owneraddr);
+        _owner = _owneraddr;
+        // _transferOwnership(_owneraddr);
     }
 
     /**

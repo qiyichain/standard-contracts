@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "A boilerplate repository to get you started with Hardhat and Ethereum development",
   "scripts": {
-    "test": "hardhat test",
+    "test": "yarn run hardhat test --network hardhat",
+    "test-qiyichain": "yarn run hardhat test --network qiyichain",
     "compile": "yarn run hardhat compile",
-    "clean": "yarn run hardhat clean"
+    "clean": "yarn run hardhat clean",
+    "deploy": "yarn run hardhat deploy --network qiyichain"
   },
   "repository": {
     "type": "git",

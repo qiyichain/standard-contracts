@@ -7,13 +7,15 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
-abstract contract StandardERC1155 is
+contract StandardERC1155 is
     ERC1155,
     Ownable,
     Pausable,
     ERC1155Burnable,
     ERC1155Supply
 {
+    constructor(string memory _baseURI) ERC1155(_baseURI) {}
+
     function setURI(string memory newuri) public onlyOwner {
         _setURI(newuri);
     }
@@ -31,7 +33,7 @@ abstract contract StandardERC1155 is
         uint256 id,
         uint256 amount,
         bytes memory data
-    ) public onlyOwner {
+    ) public onlyOwner whenNotPaused{
         _mint(account, id, amount, data);
     }
 
