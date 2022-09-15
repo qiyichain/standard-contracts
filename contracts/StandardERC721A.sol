@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./AuthManage.sol";
-import "erc721a/contracts/extensions/ERC721ABurnable.sol";
-import "erc721a/contracts/extensions/ERC721AQueryable.sol";
+import "./erc721a/extensions/ERC721ABurnable.sol";
+import "./erc721a/extensions/ERC721AQueryable.sol";
 
 // ERC721Enumerable, ERC721URIStorage {
 contract StandardERC721A is
@@ -54,7 +54,7 @@ contract StandardERC721A is
     }
 
 
-    
+
 
     // 合约开始id
     function _startTokenId() internal view virtual override returns (uint256) {
