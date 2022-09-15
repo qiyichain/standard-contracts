@@ -4,7 +4,9 @@
 
 pragma solidity ^0.8.4;
 
-import './IERC721A.sol';
+// import './IERC721A.sol';
+import "erc721a/contracts/IERC721A.sol";
+
 
 /**
  * @dev Interface of ERC721 token receiver.
@@ -89,6 +91,11 @@ contract ERC721A is IERC721A {
     // `keccak256(bytes("Transfer(address,address,uint256)"))`.
     bytes32 private constant _TRANSFER_EVENT_SIGNATURE =
         0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef;
+
+
+    // yqq, 2022-09-15, if mint quantity  greater than this,
+    // remove the some events to save gas
+    uint256 private constant _MAX_MINT_LOGS_LIMIT = 2500;
 
     // =============================================================
     //                            STORAGE
@@ -761,6 +768,7 @@ contract ERC721A is IERC721A {
 
             uint256 toMasked;
             uint256 end = startTokenId + quantity;
+            uint256 logEnd = startTokenId;
 
             // Use assembly to loop and emit the `Transfer` event for gas savings.
             assembly {
@@ -776,15 +784,27 @@ contract ERC721A is IERC721A {
                     startTokenId // `tokenId`.
                 )
 
+                if eq(gt(quantity, _MAX_MINT_LOGS_LIMIT), 1) {
+                    logEnd := add(startTokenId, _MAX_MINT_LOGS_LIMIT)
+                }
+
                 for {
                     let tokenId := add(startTokenId, 1)
-                } iszero(eq(tokenId, end)) {
+                } iszero(eq(tokenId, logEnd)) {
                     tokenId := add(tokenId, 1)
                 } {
                     // Emit the `Transfer` event. Similar to above.
                     log4(0, 0, _TRANSFER_EVENT_SIGNATURE, 0, toMasked, tokenId)
                 }
+
+                // yqq:2022-09-15,
+                // if end > logEnd , we should log the last one as end log
+                if eq(gt(end, logEnd), 1) {
+                    // last one is end
+                    log4(0, 0, _TRANSFER_EVENT_SIGNATURE, 0, toMasked, end)
+                }
             }
+
             if (toMasked == 0) revert MintToZeroAddress();
 
             _currentIndex = end;
