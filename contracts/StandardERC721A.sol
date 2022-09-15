@@ -53,6 +53,9 @@ contract StandardERC721A is
         _mint(to_, quantity);
     }
 
+
+    
+
     // 合约开始id
     function _startTokenId() internal view virtual override returns (uint256) {
         return 1;
