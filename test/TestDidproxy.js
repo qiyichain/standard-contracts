@@ -75,12 +75,14 @@ describe("DidProxy", function () {
         await expect((await tx.wait()).status).equal(1)
     })
 
-    it("test deploy erc721", async  ()=> {
-        let tx = await didproxy.deployERC721(
+    it("test deploy erc1155", async  ()=> {
+        let tx = await didproxy.deployERC1155(
             "YFH",
             "RARE",
             "https://ipfs.2312321ifaj/",
             Math.round(Math.random() * 100000),
+            true,
+            10000,
             owner
         )
 

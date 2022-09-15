@@ -14,7 +14,18 @@ contract StandardERC1155 is
     ERC1155Burnable,
     ERC1155Supply
 {
-    constructor(string memory _baseURI) ERC1155(_baseURI) {}
+    // Token name
+    string public name;
+
+    // Token symbol
+    string public symbol;
+
+    constructor(string memory _baseURI, string memory name_,
+            string memory symbol_,  address ownerAddr) ERC1155(_baseURI) {
+        name = name_;
+        symbol = symbol_;
+        transferOwnership(ownerAddr);
+    }
 
     function setURI(string memory newuri) public onlyOwner {
         _setURI(newuri);
