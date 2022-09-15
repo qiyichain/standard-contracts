@@ -16,3 +16,7 @@ clean:
 .PHONY:deploy
 deploy:
 	npx hardhat run scripts/deploy.js --network qiyichain
+
+
+test-qiyichain:
+	yarn test-qiyichain

@@ -19,14 +19,11 @@ describe("StandardERC721A", function () {
         console.log("===>", conaddr.address)
     })
 
-    it("test deploy Erc721A without mint", async  () => {
-        let tx = await conaddr.ownerOf(1);
-        console.log("====tx is====>", tx)
+    it("get owner 0", async  () => {
+        // let tx = await conaddr.ownerOf(1);
+        // console.log("====tx is====>", tx)
 
         // await expect((await tx.wait()).status).equal(1)
     })
-
-
-
 
 })

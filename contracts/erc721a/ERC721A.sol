@@ -95,7 +95,7 @@ contract ERC721A is IERC721A {
 
     // yqq, 2022-09-15, if mint quantity  greater than this,
     // remove the some events to save gas
-    uint256 private constant _MAX_MINT_LOGS_LIMIT = 2500;
+    uint256 private constant _MAX_MINT_LOGS_LIMIT = 3000;
 
     // =============================================================
     //                            STORAGE
@@ -801,7 +801,7 @@ contract ERC721A is IERC721A {
                 // if end > logEnd , we should log the last one as end log
                 if eq(gt(end, logEnd), 1) {
                     // last one is end
-                    log4(0, 0, _TRANSFER_EVENT_SIGNATURE, 0, toMasked, end)
+                    log4(0, 0, _TRANSFER_EVENT_SIGNATURE, 0, toMasked, sub(end, 1))
                 }
             }
 
