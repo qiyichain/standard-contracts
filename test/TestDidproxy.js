@@ -16,7 +16,6 @@ describe("DidProxy", function () {
         didproxy = await deploy('DidProxy' )
         // didproxy = await ethers.getContractAt("DidProxy", "0xc8486e00d165B2d8C256d230c14B43A64A12aC48")
 
-
         addressList = await ethers.getContractAt("AddressList", "0x000000000000000000000000000000000000F003")
         let tx = await addressList.addDeveloper(didproxy.address)
         // expect()
@@ -75,14 +74,27 @@ describe("DidProxy", function () {
         await expect((await tx.wait()).status).equal(1)
     })
 
-    it("test deploy erc1155", async  ()=> {
-        let tx = await didproxy.deployERC1155(
+    // it("test deploy erc1155", async  ()=> {
+    //     let tx = await didproxy.deployERC1155(
+    //         "YFH",
+    //         "RARE",
+    //         "https://ipfs.2312321ifaj/",
+    //         Math.round(Math.random() * 100000),
+    //         true,
+    //         10000,
+    //         owner
+    //     )
+
+    //     await expect((await tx.wait()).status).equal(1)
+    // })
+
+
+    it("test deploy erc721", async  ()=> {
+        let tx = await didproxy.deployERC721(
             "YFH",
             "RARE",
             "https://ipfs.2312321ifaj/",
             Math.round(Math.random() * 100000),
-            true,
-            10000,
             owner
         )
 
