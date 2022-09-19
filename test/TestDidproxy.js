@@ -27,8 +27,8 @@ describe("DidProxy", function () {
 
     it("test deploy Erc721A without mint", async  () => {
         let tx = await didproxy.deployERC721A(
-            "YFH",
-            "RARE",
+            "ERC721A",
+            "ERC721A",
             "https://ipfs.2312321ifaj/",
             Math.round(Math.random() * 100000),
             false,
@@ -42,12 +42,12 @@ describe("DidProxy", function () {
 
     it("test deploy Erc721A with mint", async  () => {
         let tx = await didproxy.deployERC721A(
-            "YFH",
-            "RARE",
+            "ERC721A",
+            "ERC721A",
             "https://ipfs.2312321ifaj/",
             Math.round(Math.random() * 100000),
             true,
-            10000,
+            3000,
             owner
         )
 
@@ -59,12 +59,12 @@ describe("DidProxy", function () {
         let o1 = await didproxy.owner()
         console.log("owner of didproxy is ", o1)
         let tx = await didproxy.deployERC721A(
-            "YFH",
-            "RARE",
+            "ERC721A",
+            "ERC721A",
             "https://ipfs.2312321ifaj/",
             Math.round(Math.random() * 100000),
             true,
-            10000,
+            3000,
             "0x8284B6412ef6eFA75adDEa85f07E7de5f8F8ec48"
         )
         let o = await didproxy.owner()
@@ -91,11 +91,13 @@ describe("DidProxy", function () {
 
     it("test deploy erc721", async  ()=> {
         let tx = await didproxy.deployERC721(
-            "YFH",
-            "RARE",
+            "ERC721",
+            "ERC721",
             "https://ipfs.2312321ifaj/",
             Math.round(Math.random() * 100000),
-            owner
+            true,
+            200,
+            "0x8284B6412ef6eFA75adDEa85f07E7de5f8F8ec48"
         )
 
         await expect((await tx.wait()).status).equal(1)

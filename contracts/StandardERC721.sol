@@ -45,6 +45,16 @@ contract StandardERC721 is
         _unpause();
     }
 
+    function mint(address to)
+        public
+        onlyOwner
+        whenNotPaused
+    {
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
+        _safeMint(to, tokenId);
+    }
+
     // tokenId auto increment
     // full-uri = baseuri  + tokenUri
     function mint(address to, string memory tokenUri)
@@ -56,6 +66,19 @@ contract StandardERC721 is
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, tokenUri);
+    }
+
+    function mintBatch(address to, uint256 quantity)
+        public
+        onlyOwner
+        whenNotPaused
+    {
+        uint256 tokenId = _tokenIdCounter.current();
+        for(uint i = 0; i < quantity; i++)
+        {
+            _mint(to, tokenId + i);
+            _tokenIdCounter.increment();
+        }
     }
 
     function _beforeTokenTransfer(
