@@ -30,8 +30,7 @@ module.exports = {
   defaultNetwork: "qiyichain",
   networks: {
     qiyichain: {
-      url: "http://172.16.100.103:8545", // 线上
-      // url: "http://192.168.110.37:8545", // 本地
+    //   url: "http://172.16.100.103:8545", // 测试网
       accounts: accounts,
       chainId: 12285, // We set 1337 to make interacting with MetaMask simpler
       gas: 40000000,
