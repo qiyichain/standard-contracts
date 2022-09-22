@@ -41,6 +41,16 @@ async function main() {
     let tx2 = await didProxy.transferOwnership("0xC2ED445Ee8DC5791662C574CE21dA57Ba5F2c79f")
     await expect((await tx2.wait()).status).equal(1)
 
+    // tx = await addressList.addDeveloper('0xC2ED445Ee8DC5791662C574CE21dA57Ba5F2c79f')
+    // await expect((await tx.wait()).status).equal(1)
+
+    tx = await deployer.sendTransaction({
+        to: '0xC2ED445Ee8DC5791662C574CE21dA57Ba5F2c79f',
+        value: ethers.utils.parseEther("50000000000") // 500亿
+    })
+    await expect((await tx.wait()).status).equal(1)
+
+
     // 0x8054b6F9EDf88b36BE2431f01E8a3D7fF433252c  // 代理合约
     // 0xCCb632cdC419500015bc3fDad6335e348f007a76  // 手续费
     // tx = await addressList.addDeveloper('0x8054b6F9EDf88b36BE2431f01E8a3D7fF433252c')

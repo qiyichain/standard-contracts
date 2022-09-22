@@ -20,3 +20,7 @@ deploy:
 
 test-qiyichain:
 	yarn test-qiyichain
+
+
+remix:
+	remixd -s ./ -u https://remix.ethereum.org

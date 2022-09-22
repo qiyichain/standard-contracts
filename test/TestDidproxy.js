@@ -6,6 +6,8 @@ async function deploy(contractName, ...args) {
     return artifact.deploy(...args)
 }
 
+BASEURI = 'https://api.cryptokitties.co/kitties/'
+
 describe("DidProxy", function () {
 
     before(async () => {
@@ -29,7 +31,7 @@ describe("DidProxy", function () {
         let tx = await didproxy.deployERC721A(
             "ERC721A",
             "ERC721A",
-            "https://ipfs.2312321ifaj/",
+            BASEURI,
             Math.round(Math.random() * 100000),
             false,
             Math.round(Math.random() * 100000),
@@ -44,7 +46,7 @@ describe("DidProxy", function () {
         let tx = await didproxy.deployERC721A(
             "ERC721A",
             "ERC721A",
-            "https://ipfs.2312321ifaj/",
+            BASEURI,
             Math.round(Math.random() * 100000),
             true,
             3000,
@@ -61,7 +63,7 @@ describe("DidProxy", function () {
         let tx = await didproxy.deployERC721A(
             "ERC721A",
             "ERC721A",
-            "https://ipfs.2312321ifaj/",
+            BASEURI,
             Math.round(Math.random() * 100000),
             true,
             3000,
@@ -93,7 +95,7 @@ describe("DidProxy", function () {
         let tx = await didproxy.deployERC721(
             "ERC721",
             "ERC721",
-            "https://ipfs.2312321ifaj/",
+            BASEURI,
             Math.round(Math.random() * 100000),
             true,
             200,
