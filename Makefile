@@ -24,3 +24,8 @@ test-qiyichain:
 
 remix:
 	remixd -s ./ -u https://remix.ethereum.org
+
+
+flatten:
+	 npx hardhat flatten ./contracts/StandardERC721A.sol  > StandardERC721A.sol
+	 npx hardhat flatten ./contracts/DidProxy.sol  > DidProxy.sol
