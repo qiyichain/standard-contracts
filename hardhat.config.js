@@ -61,8 +61,8 @@ module.exports = {
     bsctestnet: {
       // bsc 测试网
       url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
-      gasPrice: 11000000000,
-      minGasPrice: 5000000000,
+      gasPrice: 5000000000,
+    //   minGasPrice: 5000000000,
       accounts: accounts,
       chainId: 97,
       gas: 20000000,
@@ -70,8 +70,8 @@ module.exports = {
     bsc: {
       // bsc 主网
       url: "https://bsc-dataseed1.binance.org/",
-      gasPrice: 11000000000,
-      minGasPrice: 5000000000,
+      gasPrice: 5000000000,
+    //   minGasPrice: 5000000000,
       accounts: accounts,
       chainId: 56,
       gas: 20000000,
