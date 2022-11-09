@@ -19,11 +19,17 @@ deploy:
 
 .PHONY:deploy-mumbai
 deploy-mumbai:
-	npx hardhat run scripts/deploy-polygon.js --network mumbai
+	npx hardhat run scripts/deploy-only.js --network mumbai
+
+deploy-bsctestnet:
+	npx hardhat run scripts/deploy-only.js --network bsctestnet
+
+deploy-bsc:
+	npx hardhat run scripts/deploy-only.js --network bsc
 
 .PHONY:deploy-matic
 deploy-matic:
-	npx hardhat run scripts/deploy-polygon.js --network matic
+	npx hardhat run scripts/deploy-only.js --network matic
 
 
 test-qiyichain:
@@ -31,6 +37,9 @@ test-qiyichain:
 
 test-mumbai:
 	yarn run hardhat test --network mumbai
+
+test-bsctestnet:
+	yarn run hardhat test --network bsctestnet
 
 remix:
 	remixd -s ./ -u https://remix.ethereum.org
