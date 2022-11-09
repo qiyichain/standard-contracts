@@ -27,6 +27,9 @@ describe("DidProxy", function () {
         console.log("===>", didproxy.address)
     })
 
+
+
+
     it("test deploy Erc721A without mint", async  () => {
         let tx = await didproxy.deployERC721A(
             "ERC721A",
@@ -90,7 +93,7 @@ describe("DidProxy", function () {
     //     await expect((await tx.wait()).status).equal(1)
     // })
 
-
+    // 如果mint数量太大，需要消耗的Gas非常多
     it("test deploy erc721", async  ()=> {
         let tx = await didproxy.deployERC721(
             "ERC721",
@@ -98,12 +101,15 @@ describe("DidProxy", function () {
             BASEURI,
             Math.round(Math.random() * 100000),
             true,
-            200,
-            "0x8284B6412ef6eFA75adDEa85f07E7de5f8F8ec48"
+            2,
+            "0x8284B6412ef6eFA75adDEa85f07E7de5f8F8ec48",
         )
 
         await expect((await tx.wait()).status).equal(1)
     })
+
+
+
 
 
 

@@ -5,6 +5,7 @@
   "scripts": {
     "test": "yarn run hardhat test --network hardhat",
     "test-qiyichain": "yarn run hardhat test --network qiyichain",
+    "test-mumbai": "yarn run hardhat test --network mumbai",
     "compile": "yarn run hardhat compile",
     "clean": "yarn run hardhat clean",
     "deploy": "yarn run hardhat deploy --network qiyichain"

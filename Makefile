@@ -17,10 +17,20 @@ clean:
 deploy:
 	npx hardhat run scripts/deploy.js --network qiyichain
 
+.PHONY:deploy-mumbai
+deploy-mumbai:
+	npx hardhat run scripts/deploy.js --network mumbai
+
+.PHONY:deploy-matic
+deploy-matic:
+	npx hardhat run scripts/deploy.js --network matic
+
 
 test-qiyichain:
-	yarn test-qiyichain
+	yarn run hardhat test --network qiyichain
 
+test-mumbai:
+	yarn run hardhat test --network mumbai  
 
 remix:
 	remixd -s ./ -u https://remix.ethereum.org
