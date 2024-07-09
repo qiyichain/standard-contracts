@@ -15,15 +15,9 @@ task("accounts", "Prints the list of accounts", async () => {
   }
 });
 
-// 线上账号资源
+// test account
 const accounts = [
-
-  "0x5ea30eea9ba9500f3601f7659f0ccace819c562456e2f745fb2555918ab32277",
-  "0x5f65803b6cc25c409a827d040b24b503c0ce829ae5637f2eef6252b9c0c1cbb2",
-  "0xebe7a49fa9f36018b7956812a3b610034f250e1dce7eb0da9f8510882e3e80b6",
-  "0x5ea30eea9ba9500f3601f7659f0ccace819c562456e2f745fb2555918ab32277",
-  "0xebe7a49fa9f36018b7956812a3b610034f250e1dce7eb0da9f8510882e3e80b6",
-  "0x0a720a3cbca383cd38092db6911c41637fb39703792e970fcaef8ac72de671ac",
+  "TESTNET PRIVATE KEY HERE",
 ];
 
 // curl -X POST -H "Content-type:application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":83}' http://172.16.100.21:8545
